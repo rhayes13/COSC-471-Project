@@ -2,6 +2,6 @@
 
 $user = 'root';
 $pass = '';
-$db = 'test';
+$db = 'bbb_database';
 
 $conn = new mysqli('localhost', $user, $pass, $db) or die("Unable to connect");

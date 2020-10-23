@@ -1,8 +1,3 @@
-<?php
-	include_once 'connect_to_database.php';
-?>
-
-
 <script>alert('Please enter all values')</script><!-- UI: Prithviraj Narahari, php code: Alexander Martens -->
 <head>
 <title> CUSTOMER REGISTRATION </title>
@@ -10,6 +5,7 @@
 <body>
 
 	<?php
+		include_once 'connect_to_database.php';
 		if($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
 			$username = $_POST["username"];
 			$pin = $_POST["pin"];
@@ -18,27 +14,32 @@
 			$lastname = $_POST["lastname"];
 			$address = $_POST["address"];
 			$city = $_POST["city"];
+			$state = $_POST["state"];
 			$zip = $_POST["zip"];
 			$credit_card = $_POST["credit_card"];
 			$card_number = $_POST["card_number"];
 			$expiration = $_POST["expiration"];
 
-			$sql_customer = "INSERT INTO CUSTOMER (username, PIN, FName, LName, address, city, state, ZIP) VALUES ('$username', '$pin', '$firstname', '$lastname', '$address', '$city', '$zip')";
+			$sql_customer = "INSERT INTO CUSTOMER (username, PIN, FName, LName, address, city, state, ZIP) VALUES ('$username', '$pin', '$firstname', '$lastname', '$address', '$city', '$state', '$zip')";
 
-			$sql_credit_card = "INSERT INTO CREDIT_CARD (credit_card, card_number, expiration) VALUES ('$credit_card', '$card_number', '$expiration')";
+			$sql_credit_card = "INSERT INTO CREDIT_CARD (credit_card, card_number, expiration, username) VALUES ('$credit_card', '$card_number', '$expiration', '$username')";
 
 			$check_username = "SELECT * FROM CUSTOMER WHERE username = '$username')";
 
-			if($check_username) {
-				echo("Username already taken");
-			} else if ($pin != $retype_pin) {
+			if (!empty($conn->query($check_username))) {
+				echo("Username already exists");
+			}
+			else if ($pin != $retype_pin) {
 				echo("Pins do not match");
-			} else if ($sql_customer && $sql_credit_card) {
-				echo("Account has been created");
+			}
+			else if ($conn->query($sql_customer) === TRUE && $conn->query($sql_credit_card) === TRUE) {
+  				echo "New account created successfully";
 			} else {
-				echo("Error");
+				echo "Error: " . $sql_customer . "<br>" . $conn->error;
 			}
 		}
+
+		$conn->close();
 	?>
 
 	<table align="center" style="border:2px solid blue;">
