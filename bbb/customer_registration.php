@@ -1,8 +1,46 @@
+<?php
+	include_once 'connect_to_database.php';
+?>
+
+
 <script>alert('Please enter all values')</script><!-- UI: Prithviraj Narahari, php code: Alexander Martens -->
 <head>
 <title> CUSTOMER REGISTRATION </title>
 </head>
 <body>
+
+	<?php
+		if($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+			$username = $_POST["username"];
+			$pin = $_POST["pin"];
+			$retype_pin = $_POST["retype_pin"];
+			$firstname = $_POST["firstname"];
+			$lastname = $_POST["lastname"];
+			$address = $_POST["address"];
+			$city = $_POST["city"];
+			$zip = $_POST["zip"];
+			$credit_card = $_POST["credit_card"];
+			$card_number = $_POST["card_number"];
+			$expiration = $_POST["expiration"];
+
+			$sql_customer = "INSERT INTO CUSTOMER (username, PIN, FName, LName, address, city, state, ZIP) VALUES ('$username', '$pin', '$firstname', '$lastname', '$address', '$city', '$zip')";
+
+			$sql_credit_card = "INSERT INTO CREDIT_CARD (credit_card, card_number, expiration) VALUES ('$credit_card', '$card_number', '$expiration')";
+
+			$check_username = "SELECT * FROM CUSTOMER WHERE username = '$username')";
+
+			if($check_username) {
+				echo("Username already taken");
+			} else if ($pin != $retype_pin) {
+				echo("Pins do not match");
+			} else if ($sql_customer && $sql_credit_card) {
+				echo("Account has been created");
+			} else {
+				echo("Error");
+			}
+		}
+	?>
+
 	<table align="center" style="border:2px solid blue;">
 		<tr>
 			<form id="register" action="" method="post">
