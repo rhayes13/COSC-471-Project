@@ -11,7 +11,7 @@
 <title> CUSTOMER REGISTRATION </title>
 </head>
 <body>
-
+	<br>
 	<?php
 		include_once 'connect_to_database.php';
 		if($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
