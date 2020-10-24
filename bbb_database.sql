@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2020 at 03:33 AM
+-- Generation Time: Oct 24, 2020 at 03:53 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -56,6 +56,27 @@ INSERT INTO `book` (`ISBN`, `title`, `price`, `author`, `publisher`, `genre`) VA
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `credit_card`
+--
+
+CREATE TABLE `credit_card` (
+  `credit_card` varchar(20) DEFAULT NULL,
+  `card_number` bigint(20) NOT NULL,
+  `expiration` varchar(5) DEFAULT NULL,
+  `username` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `credit_card`
+--
+
+INSERT INTO `credit_card` (`credit_card`, `card_number`, `expiration`, `username`) VALUES
+('MASTER', 12345, '33323', 'ThirdU'),
+('VISA', 3939393939, '99/33', 'UserOne');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customer`
 --
 
@@ -69,6 +90,14 @@ CREATE TABLE `customer` (
   `state` varchar(40) DEFAULT NULL,
   `ZIP` varchar(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`username`, `PIN`, `FName`, `LName`, `address`, `city`, `state`, `ZIP`) VALUES
+('ThirdU', 'kk', 'kk', 'kk', 'kk', 'kk', 'Michigan', '93940'),
+('UserOne', 'kk', 'First', 'Last', '123', '22', 'Michigan', '34342');
 
 -- --------------------------------------------------------
 
@@ -122,6 +151,13 @@ ALTER TABLE `book`
   ADD PRIMARY KEY (`ISBN`);
 
 --
+-- Indexes for table `credit_card`
+--
+ALTER TABLE `credit_card`
+  ADD PRIMARY KEY (`card_number`),
+  ADD KEY `username` (`username`);
+
+--
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
@@ -149,6 +185,12 @@ ALTER TABLE `user`
 --
 ALTER TABLE `admin`
   ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`Username`);
+
+--
+-- Constraints for table `credit_card`
+--
+ALTER TABLE `credit_card`
+  ADD CONSTRAINT `credit_card_ibfk_1` FOREIGN KEY (`username`) REFERENCES `customer` (`username`);
 
 --
 -- Constraints for table `review`
