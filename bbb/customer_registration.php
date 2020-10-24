@@ -1,8 +1,71 @@
-<script>alert('Please enter all values')</script><!-- UI: Prithviraj Narahari, php code: Alexander Martens -->
+<script type="text/javascript">
+    var alerted = localStorage.getItem('alerted') || '';
+    if (alerted != 'yes') {
+     alert('Please enter all values');
+     localStorage.setItem('alerted','yes');
+    }
+</script>
+
+<!-- UI: Prithviraj Narahari, php code: Alexander Martens -->
 <head>
 <title> CUSTOMER REGISTRATION </title>
 </head>
 <body>
+
+	<?php
+		include_once 'connect_to_database.php';
+		if($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+			$username = $_POST["username"];
+			$pin = $_POST["pin"];
+			$retype_pin = $_POST["retype_pin"];
+			$firstname = $_POST["firstname"];
+			$lastname = $_POST["lastname"];
+			$address = $_POST["address"];
+			$city = $_POST["city"];
+			$state = $_POST["state"];
+			$zip = $_POST["zip"];
+			$credit_card = $_POST["credit_card"];
+			$card_number = $_POST["card_number"];
+			$expiration = $_POST["expiration"];
+
+			$sql_customer = "INSERT INTO CUSTOMER (username, PIN, FName, LName, address, city, state, ZIP) VALUES ('$username', '$pin', '$firstname', '$lastname', '$address', '$city', '$state', '$zip')";
+
+			$sql_credit_card = "INSERT INTO CREDIT_CARD (credit_card, card_number, expiration, username) VALUES ('$credit_card', '$card_number', '$expiration', '$username')";
+
+			$check_username = "SELECT * FROM CUSTOMER WHERE username = '$username')";
+
+
+
+			$required = array('username', 'pin', 'retype_pin', 'firstname', 'lastname', 'address', 'city', 'state', 'zip', 'credit_card', 'card_number', 'expiration');
+			$error = false;
+			foreach($required as $field) {
+			  if (empty($_POST[$field])) {
+			    $error = true;
+			  }
+			}
+
+			if ($error) {
+			  echo "All fields are required.";
+			} else {
+				if (!empty($conn->query($check_username))) {
+					echo("Username already exists");
+				}
+				else if ($pin != $retype_pin) {
+					echo("Pins do not match");
+				}
+				else if ($conn->query($sql_customer) === TRUE && $conn->query($sql_credit_card) === TRUE) {
+	  				echo "New account created successfully";
+				} else {
+					echo "Error: " . $sql_customer . "<br>" . $conn->error;
+				}
+			}
+
+			
+		}
+
+		$conn->close();
+	?>
+
 	<table align="center" style="border:2px solid blue;">
 		<tr>
 			<form id="register" action="" method="post">
