@@ -11,7 +11,7 @@
 <title> CUSTOMER REGISTRATION </title>
 </head>
 <body>
-	<br>
+
 	<?php
 		include_once 'connect_to_database.php';
 		if($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
@@ -56,7 +56,8 @@
 				else if ($conn->query($sql_customer) === TRUE && $conn->query($sql_credit_card) === TRUE) {
 	  				echo "New account created successfully";
 				} else {
-					echo "Error: " . $sql_customer . "<br>" . $conn->error;
+					//echo "Error: " . $sql_customer . "<br>" . $conn->error;
+					echo("Username already exists");
 				}
 			}
 
