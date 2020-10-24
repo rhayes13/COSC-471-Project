@@ -1,5 +1,8 @@
-
 <!DOCTYPE HTML>
+<?php
+	include_once 'connect_to_database.php';
+?>
+
 <head>
 	<title>Shopping Cart</title>
 	<script>
