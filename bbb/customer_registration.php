@@ -1,4 +1,12 @@
-<script>alert('Please enter all values')</script><!-- UI: Prithviraj Narahari, php code: Alexander Martens -->
+<script type="text/javascript">
+    var alerted = localStorage.getItem('alerted') || '';
+    if (alerted != 'yes') {
+     alert('Please enter all values');
+     localStorage.setItem('alerted','yes');
+    }
+</script>
+
+<!-- UI: Prithviraj Narahari, php code: Alexander Martens -->
 <head>
 <title> CUSTOMER REGISTRATION </title>
 </head>
@@ -26,17 +34,33 @@
 
 			$check_username = "SELECT * FROM CUSTOMER WHERE username = '$username')";
 
-			if (!empty($conn->query($check_username))) {
-				echo("Username already exists");
+
+
+			$required = array('username', 'pin', 'retype_pin', 'firstname', 'lastname', 'address', 'city', 'state', 'zip', 'credit_card', 'card_number', 'expiration');
+			$error = false;
+			foreach($required as $field) {
+			  if (empty($_POST[$field])) {
+			    $error = true;
+			  }
 			}
-			else if ($pin != $retype_pin) {
-				echo("Pins do not match");
-			}
-			else if ($conn->query($sql_customer) === TRUE && $conn->query($sql_credit_card) === TRUE) {
-  				echo "New account created successfully";
+
+			if ($error) {
+			  echo "All fields are required.";
 			} else {
-				echo "Error: " . $sql_customer . "<br>" . $conn->error;
+				if (!empty($conn->query($check_username))) {
+					echo("Username already exists");
+				}
+				else if ($pin != $retype_pin) {
+					echo("Pins do not match");
+				}
+				else if ($conn->query($sql_customer) === TRUE && $conn->query($sql_credit_card) === TRUE) {
+	  				echo "New account created successfully";
+				} else {
+					echo "Error: " . $sql_customer . "<br>" . $conn->error;
+				}
 			}
+
+			
 		}
 
 		$conn->close();
