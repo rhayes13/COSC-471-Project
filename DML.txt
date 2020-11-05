@@ -1,0 +1,34 @@
+INSERT INTO `bbb_user` (`username`, `PIN`, `type`, `FName`, `LName`, `address`, `city`, `state`, `ZIP`) VALUES
+('admin', 'password', 0, NULL, NULL, NULL, NULL, NULL, NULL),
+('user_one', 'password1', 1, 'Ryan', 'Hayes', '22 Main St', 'Ann Arbor', 'MI', 48111),
+('user_two', 'password2', 1, 'Sam', 'Grone', '504 North Fifth', 'Ann Arbor', 'MI', 48111),
+('joe', 'usa', 1, 'Joe', 'Biden', '1600 Penn Ave', 'Washington', 'DC', 20500);
+
+
+INSERT INTO `credit_card` (`card_number`, `card_type`, `expiration`, `username`) VALUES
+('7483 9494 2209 9483', 'Visa', '10/2025', 'user_one'),
+('9993 8934 0983 0016', 'Visa', '01/2022', 'user_two'),
+('2231 8476 3094 7629', 'MasterCard', '03/2022', 'joe');
+
+
+INSERT INTO `sale` (`sale_id`, `quantity`, `month`, `sale_year`, `sold`, `username`) VALUES
+(1, 1, 'October', 2020, 1, 'user_one'),
+(2, 2, 'November', 2019, 1, 'user_two'),
+(3, 1, 'May', 2020, 1, 'joe');
+
+
+
+INSERT INTO `book` (`ISBN`, `title`, `price`, `author`, `publisher`, `category`, `sale_id`) VALUES
+('72227885', 'SQL Server 2000 for Experienced DBA\'s', '34.99', 'Brian Knight', 'McGraw-Hill Osborn Media', 'Education', 1),
+('4253458821453', 'The Guru\'s Guide to Transact-SQL', '38.49', 'Ken Henderson', 'Penguin Books', 'Education', 2),
+('7387498766654', 'The Long Journey', '12.49', 'James Semke', 'Harper Collins', 'Fiction', 3);
+
+
+
+INSERT INTO `review` (`review_id`, `ISBN`, `review`) VALUES
+(1, '72227885', 'The book was good.'),
+(2, '72227885', 'The book was bad.'),
+(3, '72227885', 'The book was mediocre.'),
+(4, '72227885', 'I learned alot.'),
+(5, '72227885', 'Normally I hate to read, and this book did nothing to change that.'),
+(6, '72227885', 'Don\'t listen to the negative reviews. This is the greatest book ever written.');
