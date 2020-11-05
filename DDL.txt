@@ -32,7 +32,7 @@ CREATE TABLE sale (
 
 CREATE TABLE book (
 	ISBN varchar(13) PRIMARY KEY NOT NULL,
-    title varchar(20),
+    title varchar(50),
     price DECIMAL(10,2),
     author varchar(40),
     publisher varchar(40),
