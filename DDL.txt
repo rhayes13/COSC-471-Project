@@ -1,0 +1,49 @@
+CREATE DATABASE bbb_database;
+
+CREATE TABLE bbb_user (
+	username varchar(20) PRIMARY KEY NOT NULL,
+    PIN varchar(20) NOT NULL,
+    type BOOLEAN NOT NULL,
+    FName varchar(20),
+    LNname varchar(20),
+    address varchar(20),
+    city varchar(20),
+    state varchar(20),
+    ZIP integer(5)
+);
+
+CREATE TABLE credit_card (
+	card_number varchar(30) PRIMARY KEY NOT NULL,
+    card_type varchar(20),
+    expiration varchar(7),
+    username varchar(20) NOT NULL,
+    FOREIGN KEY (username) REFERENCES bbb_user(username)
+);
+
+CREATE TABLE sale (
+	sale_id integer PRIMARY KEY NOT NULL,
+    quantity integer,
+    month varchar(10),
+    sale_year integer(4),
+    sold BOOLEAN NOT NULL,
+    username varchar(20),
+    FOREIGN KEY (username) REFERENCES bbb_user(username)
+);
+
+CREATE TABLE book (
+	ISBN varchar(13) PRIMARY KEY NOT NULL,
+    title varchar(20),
+    price DECIMAL(10,2),
+    author varchar(40),
+    publisher varchar(40),
+    category varchar(40),
+    sale_id integer,
+    FOREIGN KEY (sale_id) REFERENCES sale(sale_id)
+);
+
+CREATE TABLE review (
+	review_id integer PRIMARY KEY NOT NULL,
+    ISBN varchar(13),
+    review varchar(250),
+    FOREIGN KEY (ISBN) REFERENCES book(ISBN)
+);
