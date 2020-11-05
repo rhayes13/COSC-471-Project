@@ -5,7 +5,7 @@ CREATE TABLE bbb_user (
     PIN varchar(20) NOT NULL,
     type BOOLEAN NOT NULL,
     FName varchar(20),
-    LNname varchar(20),
+    LName varchar(20),
     address varchar(20),
     city varchar(20),
     state varchar(20),
