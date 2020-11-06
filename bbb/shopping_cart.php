@@ -13,6 +13,11 @@
 	</script>
 </head>
 <body>
+
+	<?php
+		$sql_query = "SELECT * FROM SALE WHERE sold=0";
+		$result = 
+	?>
 	<table align="center" style="border:2px solid blue;">
 		<tr>
 			<td align="center">
