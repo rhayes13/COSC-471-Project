@@ -38,18 +38,38 @@
 		<td style="width: 350px" colspan="3" align="center">
 			<div id="bookdetails" style="overflow:scroll;height:180px;width:400px;border:1px solid black;background-color:LightBlue">
 				<table>
-				<tr><td align='left'>
-						<button name='btnCart' id='btnCart' onClick='cart("72227885", "", "Array", "all")'>Add to Cart</button></td>
-					<td rowspan='2' align='left'>SQL Server 2000 for Experienced DBA's</br>Brian Knight</br>
-						<b>Publisher:</b> McGraw-Hill Osborn Media,</br>
-						<b>ISBN:</b> 72227885</t> <b>Price:</b> 34.99</td></tr>
-				<tr><td align='left'><button name='review' id='review' onClick='review("72227885")'>Reviews</button></td></tr>
-				<tr><td colspan='2'><p>_______________________________________________</p></td></tr>
-				
-				
-				<tr><td align='left'><button name='btnCart' id='btnCart' onClick='cart("978-0316055437", "", "Array", "all")'>Add to Cart</button></td><td rowspan='2' align='left'>title</br>By fname lname</br><b>Publisher:</b> pub,</br><b>ISBN:</b> 978-0316055437</t> <b>Price:</b> 12.99</td></tr><tr><td align='left'><button name='review' id='review' onClick='review("978-0316055437")'>Reviews</button></td></tr><tr><td colspan='2'><p>_______________________________________________</p></td></tr>
-				<tr><td align='left'><button name='btnCart' id='btnCart' onClick='cart("978-0345339706", "", "Array", "all")'>Add to Cart</button></td><td rowspan='2' align='left'>Lord of the Rings, The Fellowship of the</br>By J.R.R. Tolkien</br><b>Publisher:</b> Del Rey,</br><b>ISBN:</b> 978-0345339706</t> <b>Price:</b> 8.09</td></tr><tr><td align='left'><button name='review' id='review' onClick='review("978-0345339706")'>Reviews</button></td></tr><tr><td colspan='2'><p>_______________________________________________</p></td></tr>
-				<tr><td align='left'><button name='btnCart' id='btnCart' onClick='cart("978-0590353427", "", "Array", "all")'>Add to Cart</button></td><td rowspan='2' align='left'>Harry Potter and the Sorcerer Stone</br>By J.K. Rowling</br><b>Publisher:</b> Scholastic,</br><b>ISBN:</b> 978-0590353427</t> <b>Price:</b> 8.47</td></tr><tr><td align='left'><button name='review' id='review' onClick='review("978-0590353427")'>Reviews</button></td></tr><tr><td colspan='2'><p>_______________________________________________</p></td></tr>			
+					<?php							
+							$books = "SELECT * FROM book;";
+							$result = mysqli_query($conn, $books);
+							$resultCheck = mysqli_num_rows($result);
+							
+							// UPDATE THIS FUNCTION SO THAT CURRENT USER IS SELECTED
+							// NOT FUNCTIONAL YET
+							function insertToCart($sale_id, $quantity, $month,$sale_year, $sold, $username) {
+								$SQL = "INSERT INTO sale (sale_id,  quanity, month, sale_year, sold, username) 
+									VALUES ('".$sale_id."
+											', '".$quantity."
+											', '".$month."
+											', '".$sale_year."
+											', '".$sold."
+											', '".$username."')";
+							}
+							
+							
+							if (mysqli_num_rows($result) > 0) {
+								while ($row = mysqli_fetch_assoc($result)) {
+									echo "<tr><td align='left'>";
+									// CURRENTLY WORKING ON FIXING THIS BUTTON
+									echo "<button name='btnCart' id='btnCart' onClick='" . insertToCart(4, 1, 'May', 2020, 0, 'joe', '72227885') . "'>Add to Cart</button></td>";
+									
+									echo "<td rowspan='2' align='left'>" . $row['title'].  "</br>" . $row['author']. "</br>";
+									echo "<b>Publisher:</b> " . $row['publisher']. ",</br>";
+									echo "<b>ISBN:</b> " . $row['ISBN']. "</t> <b>Price:</b> " . $row['price']. "</td></tr>";
+									echo "<tr><td align='left'><button name='review' id='review' onClick='review(\"" . $row['ISBN']. "\")'>Reviews</button></td></tr>";
+									echo "<tr><td colspan='2'><p>_______________________________________________</p></td></tr>";
+								}
+							}
+						?>
 				</table>
 			</div>
 			

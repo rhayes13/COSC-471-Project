@@ -20,6 +20,15 @@ CREATE TABLE credit_card (
     FOREIGN KEY (username) REFERENCES bbb_user(username)
 );
 
+CREATE TABLE book (
+	ISBN varchar(13) PRIMARY KEY NOT NULL,
+    title varchar(50),
+    price DECIMAL(10,2),
+    author varchar(40),
+    publisher varchar(40),
+    category varchar(40)
+);
+
 CREATE TABLE sale (
 	sale_id integer PRIMARY KEY NOT NULL,
     quantity integer,
@@ -27,18 +36,9 @@ CREATE TABLE sale (
     sale_year integer(4),
     sold BOOLEAN NOT NULL,
     username varchar(20),
-    FOREIGN KEY (username) REFERENCES bbb_user(username)
-);
-
-CREATE TABLE book (
-	ISBN varchar(13) PRIMARY KEY NOT NULL,
-    title varchar(50),
-    price DECIMAL(10,2),
-    author varchar(40),
-    publisher varchar(40),
-    category varchar(40),
-    sale_id integer,
-    FOREIGN KEY (sale_id) REFERENCES sale(sale_id)
+	ISBN varchar(13),
+    FOREIGN KEY (username) REFERENCES bbb_user(username),
+	FOREIGN KEY (ISBN) REFERENCES book(ISBN)
 );
 
 CREATE TABLE review (
