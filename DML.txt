@@ -26,7 +26,8 @@ INSERT INTO `sale` (`sale_id`, `quantity`, `month`, `sale_year`, `sold`, `userna
 VALUES
 	(1, 1, 'October', 2020, 1, 'user_one', '72227885'),
 	(2, 2, 'November', 2019, 1, 'user_two', '72227885'),
-	(3, 1, 'May', 2020, 1, 'joe', '72227885'
+	(3, 1, 'May', 2020, 1, 'joe', '72227885'), 
+	(4, 1, 'October', 2020, 0, 'user_one', '72227885'
 );
 
 INSERT INTO `review` (`review_id`, `ISBN`, `review`) 
