@@ -22,9 +22,11 @@
 	<table align="center" style="border:1px solid blue;">
 		<tr>
 			<td align="left">
-				
-					<h6> <fieldset>Your Shopping Cart has 0 items</fieldset> </h6>
-				
+				<?php
+					$sales = mysqli_query($conn, "SELECT * FROM sale WHERE sold = 0;");	
+					$cart_num = mysqli_num_rows($sales); // Calculate new sale_id	
+					echo "<h6> <fieldset>Your Shopping Cart has " . $cart_num . " items</fieldset> </h6>";
+				?>
 			</td>
 			<td>
 				&nbsp
@@ -43,8 +45,9 @@
 							$books = "SELECT * FROM book;";
 							$result = mysqli_query($conn, $books);						
 							
-							// UPDATE THIS FUNCTION SO THAT CURRENT USER IS SELECTED
-							// NOT FUNCTIONAL YET
+							// Insert statement with to sale table sold = 0
+							// Indicates that book is in shopper's cart
+							// In screen 5, sort where 'sold' = 0 to find items in cart (delete these on log off)
 							function insertToCart($conn, $sale_id, $quantity, $month,$sale_year, $sold, $username, $isbn) {
 								$SQL = "INSERT INTO sale (sale_id,  quantity, month, sale_year, sold, username, isbn) 
 									VALUES (".$sale_id.",
@@ -58,17 +61,25 @@
 							}
 							
 							
+							// This is the where the information on this screen comes from
 							if (mysqli_num_rows($result) > 0) {
+								$sale_id = mysqli_query($conn, "SELECT * FROM sale;");	
+								$current_sale_id = mysqli_num_rows($sale_id) + 1; // Calculate new sale_id	
+								
 								while ($row = mysqli_fetch_assoc($result)) {
 									
 									echo "<tr><td align='left'>";
-									echo "<button name='btnCart' id='btnCart' onClick='cart(4, 1, \"May\", 2014, 0, \"joe\", \"72227885\")'>Add to Cart</button></td>";
+									//Next line calls cart() JS function
+									// TO-DO: Need to remove hard-coding of username attribute
+									echo "<button name='btnCart' id='btnCart' onClick='cart(" . $current_sale_id ." , 1, \"". date("F") . "\", \"". date("Y") . "\", 0, \"joe\", \"" . $row['ISBN']. "\")'>Add to Cart</button></td>";
 									echo "<td rowspan='2' align='left'>" . $row['title'].  "</br>" . $row['author']. "</br>";
 									echo "<b>Publisher:</b> " . $row['publisher']. ",</br>";
 									echo "<b>ISBN:</b> " . $row['ISBN']. "</t> <b>Price:</b> " . $row['price']. "</td></tr>";
+									//Calls review() JS function
 									echo "<tr><td align='left'><button name='review' id='review' onClick='review(\"" . $row['ISBN']. "\")'>Reviews</button></td></tr>";
 									echo "<tr><td colspan='2'><p>_______________________________________________</p></td></tr>";
 										
+									// Check if URL has been updated by cart() script at top of page
 									if (isset($_GET['sale_id'])) {
 										$sale_id = $_GET['sale_id'];
 										$quantity = $_GET['quantity'];
@@ -79,6 +90,7 @@
 										$isbn = $_GET['isbn'];
 																				
 										insertToCart($conn, $sale_id, $quantity, $month,$sale_year, $sold, $username, $isbn);
+										$current_sale_id++;
 									}
 								}
 							}
