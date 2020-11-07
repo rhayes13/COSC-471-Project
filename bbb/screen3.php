@@ -42,7 +42,112 @@
 			<div id="bookdetails" style="overflow:scroll;height:180px;width:400px;border:1px solid black;background-color:LightBlue">
 				<table>
 					<?php							
-							$books = "SELECT * FROM book;";
+							$books = "SELECT * FROM book";
+							
+							function where_sql() {
+								$str = " WHERE ";
+								$keywordcounter = 1;
+								
+								while (isset($_GET['keyword'.$keywordcounter.''])) {
+									$keyword = $_GET['keyword'.$keywordcounter.''];
+									
+									echo "<script>console.log('here');</script>";
+									// If 'Keyword Anywhere'
+									if ($_GET['att1'] === "anywhere") {
+										if ($keywordcounter === 1){
+											$str = $str." title LIKE '%".$keyword."%'";
+										}
+										else { 
+											$str = $str." OR title LIKE '%".$keyword."%'";
+										}
+										$str = $str." OR author LIKE '%".$keyword."%'";
+										$str = $str." OR publisher LIKE '%".$keyword."%'";
+										$str = $str." OR ISBN LIKE '%".$keyword."%'";
+										;
+									} else {
+										// First attribute to sort by
+										if ($_GET['att1'] === "title"){
+											if ($keywordcounter === 1){
+												$str = $str." title LIKE '%".$keyword."%'";
+											}
+											else { 
+												$str = $str." OR title LIKE '%".$keyword."%'";
+											}
+										} 
+										
+										if ($_GET['att1'] === "author"){
+											if ($keywordcounter === 1){
+												$str = $str." author LIKE '%".$keyword."%'";
+											}
+											else { 
+												$str = $str." OR author LIKE '%".$keyword."%'";
+											}
+										} 
+										
+										if ($_GET['att1'] === "publisher"){
+											if ($keywordcounter === 1){
+												$str = $str." publisher LIKE '%".$keyword."%'";
+											}
+											else { 
+												$str = $str." OR publisher LIKE '%".$keyword."%'";
+											}
+										}
+
+										if ($_GET['att1'] === "isbn"){
+											if ($keywordcounter === 1){
+												$str = $str." isbn LIKE '%".$keyword."%'";
+											}
+											else { 
+												$str = $str." OR isbn LIKE '%".$keyword."%'";
+											}
+										}
+
+										// Second attribute to sort by
+										if (isset($_GET['att2'])){
+											if ($_GET['att2'] === "author"){
+													$str = $str." OR author LIKE '%".$keyword."%'";
+											} 
+											
+											if ($_GET['att2'] === "publisher"){
+												$str = $str." OR publisher LIKE '%".$keyword."%'";
+											}									
+
+											if ($_GET['att2'] === "isbn"){
+												$str = $str." OR isbn LIKE '%".$keyword."%'";
+											}
+										}
+										// Sort third attribute by
+										if (isset($_GET['att3'])){
+											if ($_GET['att3'] === "publisher"){
+												$str = $str." OR publisher LIKE '%".$keyword."%'";
+											}									
+
+											if ($_GET['att3'] === "isbn"){
+												$str = $str." OR isbn LIKE '%".$keyword."%'";
+											}	
+										}
+										// Sort fourth attribute by								
+										if (isset($_GET['att4'])){
+											if ($_GET['att4'] === "isbn"){
+												$str = $str." OR isbn LIKE '%".$keyword."%'";
+											}	
+										}
+									}
+									
+									echo "<script>console.log('yooooo');</script>";
+									// If category does not equal 'all'
+									if ($_GET['category'] !== "all") {
+										echo "<script>console.log('why');</script>";
+										$str = $str." AND category = '".$_GET['category']."'";
+									} 
+									$keywordcounter++;
+								}
+								
+								return $str;
+							}
+							
+							$books = $books.where_sql();							
+							
 							$result = mysqli_query($conn, $books);						
 							
 							// Insert statement with to sale table sold = 0
@@ -59,7 +164,6 @@
 											'".$isbn."')";
 								mysqli_query($conn, $SQL);
 							}
-							
 							
 							// This is the where the information on this screen comes from
 							if (mysqli_num_rows($result) > 0) {
