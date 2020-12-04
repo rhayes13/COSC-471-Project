@@ -2,6 +2,11 @@
 	include_once 'connect_to_database.php';
 ?>
 
+<?php
+	// Start the session
+	session_start();
+?>
+
 <html>
 <head>
 	<title> Search Result - 3-B.com </title>
@@ -175,7 +180,7 @@
 									echo "<tr><td align='left'>";
 									//Next line calls cart() JS function
 									// TO-DO: Need to remove hard-coding of username attribute
-									echo "<button name='btnCart' id='btnCart' onClick='cart(" . $current_sale_id ." , 1, \"". date("F") . "\", \"". date("Y") . "\", 0, \"joe\", \"" . $row['ISBN']. "\")'>Add to Cart</button></td>";
+									echo "<button name='btnCart' id='btnCart' onClick='cart(" . $current_sale_id ." , 1, \"". date("F") . "\", \"". date("Y") . "\", 0, \"" . $_SESSION["user"] . "\", \"" . $row['ISBN']. "\")'>Add to Cart</button></td>";
 									echo "<td rowspan='2' align='left'>" . $row['title'].  "</br>" . $row['author']. "</br>";
 									echo "<b>Publisher:</b> " . $row['publisher']. ",</br>";
 									echo "<b>ISBN:</b> " . $row['ISBN']. "</t> <b>Price:</b> " . $row['price']. "</td></tr>";

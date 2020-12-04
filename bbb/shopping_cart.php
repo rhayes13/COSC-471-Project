@@ -1,11 +1,18 @@
-<!DOCTYPE HTML>
+
 <?php
 	include_once 'connect_to_database.php';
+?>
+<?php
+	// Start the session
+	session_start();
+	echo $_SESSION["user"];
+
+
 ?>
 <!--
 	2. Quantity is not being updated (currently hardcoded)
 -->
-
+<!DOCTYPE HTML>
 <head>
 	<title>Shopping Cart</title>
 	<script>
@@ -32,6 +39,7 @@
 		<tr>
 			<td align="center">
 				<form id="checkout" action="confirm_order.php" method="get">
+										<input type="hidden" name="quan" value="quan">
 					<input type="submit" name="checkout_submit" id="checkout_submit" value="Proceed to Checkout">
 				</form>
 			</td>
@@ -61,18 +69,20 @@
 							function urlFun($conn, $sale_id, $quantity, $isbn) {
 								$quantity_query = "UPDATE SALE
 										SET quantity='$quantity'
-										WHERE sale_id='$sale_id' AND ISBN='$isbn'";
+										WHERE sale_id='$sale_id' AND ISBN='$isbn';";
 								mysqli_query($conn, $quantity_query);
 							}
 
 							//Delete
 							function delete($conn, $sale_id, $isbn) {
-								$SQL = "DELETE FROM SALE WHERE sale_id='$sale_id' AND ISBN='$isbn'";
+								$SQL = "DELETE FROM SALE WHERE sale_id='$sale_id' AND ISBN='$isbn';";
 								mysqli_query($conn, $SQL);
 							}
 
+							//TODO: if quantity changed, update db
+							
 
-							$sql_query = "SELECT * FROM SALE NATURAL JOIN BOOK WHERE sold=0"; 
+							$sql_query = "SELECT * FROM SALE NATURAL JOIN BOOK WHERE sold=0 AND username='" . $_SESSION["user"] . "';"; 
 							$mysqli_result = $conn->query($sql_query); 
 							
 
@@ -86,6 +96,12 @@
 									$price = $row['price'];
 									$sale_id = $row['sale_id'];
 
+
+
+									if (isset($_POST['isbn'])) {
+										$quantity = $_POST['isbn'];
+										urlFun($conn, $sale_id, $quantity, $isbn);
+									}
 								
 									echo "<tr><td><button name='delete' id='delete' onClick='del(" . $isbn . ");return false;'>Delete Item</button></td>";
 									echo "<td>" . $title . "</br><b>By</b> " . $author . "</br><b>Publisher:</b> " . $publisher . "</td>";
@@ -94,18 +110,12 @@
 									echo "</tr>";
 									// echo "<p>" . $sale_id . "</p>";
 									
-									if (isset($_GET['delIsbn'])) {
-										$isbn = $_GET['delIsbn'];
+									if (isset($_POST['delIsbn'])) {
+										$isbn = $_POST['delIsbn'];
 										delete($conn, $sale_id, $isbn);
 									}
 
-									//TODO: if quantity changed, update db
-									if (isset($_GET['sale_id'])) {
-										$sale_id = $_GET['sale_id'];
-										$quantity = $_GET['quantity'];
-										$isbn = $_GET['isbn'];
-										urlFun($conn, $sale_id, $quantity, $isbn);
-									}
+									
 								}
 							}
 						?>
@@ -124,7 +134,7 @@
 			<td align="center">
 				<?php
 					//Calculate; for each book: subtotal += quantity*price
-					$sql_query = "SELECT * FROM SALE NATURAL JOIN BOOK WHERE sold=0"; 
+					$sql_query = "SELECT * FROM SALE NATURAL JOIN BOOK WHERE sold=0 AND username='" . $_SESSION["user"] . "';";
 					$mysqli_result = $conn->query($sql_query); 
 					
 					$sum = 0;
@@ -138,7 +148,7 @@
 					}
 					echo "Subtotal: $" . $sum;
 
-					$conn->close();
+					//$conn->close();
 				?>
 
 			</td>

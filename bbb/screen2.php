@@ -1,6 +1,16 @@
 <?php
 	include_once 'connect_to_database.php';
 ?>
+<?php
+	// Start the session
+	session_start();
+	if(isset($_POST['username']))
+	{
+	    $_SESSION["user"] = $_POST["username"];
+	}
+	
+	echo $_SESSION["user"];
+?>
 
 
 <!-- Figure 2: Search Screen by Alexander -->
