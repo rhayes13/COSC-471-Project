@@ -1,4 +1,11 @@
-
+<?php
+	include_once 'connect_to_database.php';
+?>
+<?php
+	// Start the session
+	session_start();
+	echo $_SESSION["user"];
+?>
 <!DOCTYPE HTML>
 <head>
 	<title>CONFIRM ORDER</title>
@@ -12,6 +19,9 @@
 	Shipping Address:
 	</td>
 	</tr>
+	<?php
+		$query = "SELECT * FROM "
+	?>
 	<td colspan="2">
 		test test	</td>
 	<td rowspan="3" colspan="2">
