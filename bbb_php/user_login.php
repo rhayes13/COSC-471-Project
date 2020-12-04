@@ -1,3 +1,10 @@
+<?php
+	include_once 'connect_to_database.php';
+?>
+<?php
+	// Start the session
+	session_start();
+?>
 
 <!DOCTYPE HTML>
 <head>

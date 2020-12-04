@@ -28,15 +28,15 @@
 			$card_number = $_POST["card_number"];
 			$expiration = $_POST["expiration"];
 
-			$sql_customer = "INSERT INTO CUSTOMER (username, PIN, FName, LName, address, city, state, ZIP) VALUES ('$username', '$pin', '$firstname', '$lastname', '$address', '$city', '$state', '$zip')";
+			$sql_bbb_user = "INSERT INTO BBB_USER (username, PIN, type, FName, LName, address, city, state, ZIP) VALUES ('$username', '$pin', 1, '$firstname', '$lastname', '$address', '$city', '$state', '$zip')";
 
-			$sql_credit_card = "INSERT INTO CREDIT_CARD (credit_card, card_number, expiration, username) VALUES ('$credit_card', '$card_number', '$expiration', '$username')";
+			$sql_credit_card = "INSERT INTO CREDIT_CARD (card_number, card_type, expiration, username) VALUES ('$card_number', '$credit_card', '$expiration', '$username')";
 
 			$check_username = "SELECT * FROM CUSTOMER WHERE username = '$username')";
 
 
 
-			$required = array('username', 'pin', 'retype_pin', 'firstname', 'lastname', 'address', 'city', 'state', 'zip', 'credit_card', 'card_number', 'expiration');
+			$required = array('username', 'pin', 'retype_pin', 'firstname', 'lastname', 'address', 'city', 'state', 'zip', 'card_number', 'credit_card', 'expiration');
 			$error = false;
 			foreach($required as $field) {
 			  if (empty($_POST[$field])) {
@@ -53,15 +53,13 @@
 				else if ($pin != $retype_pin) {
 					echo("Pins do not match");
 				}
-				else if ($conn->query($sql_customer) === TRUE && $conn->query($sql_credit_card) === TRUE) {
+				else if ($conn->query($sql_bbb_user) === TRUE && $conn->query($sql_credit_card) === TRUE) {
 	  				echo "New account created successfully";
 				} else {
-					//echo "Error: " . $sql_customer . "<br>" . $conn->error;
-					echo("Username already exists");
+					//echo "Error: " . $sql_bbb_user . "<br>" . $conn->error;
+					//echo("Username already exists");
 				}
 			}
-
-			
 		}
 
 		$conn->close();

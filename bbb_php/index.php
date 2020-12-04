@@ -2,9 +2,17 @@
 <?php
 	include_once 'connect_to_database.php';
 ?>
+<?php
+	// Start the session
+	session_start();
+?>
 
 <title>Welcome to Best Book Buy Online Bookstore!</title>
 <body>
+	<?php
+		// Set session variables
+		$_SESSION["user"] = "guest";
+	?>
 	<table align="center" style="border:1px solid blue;">
 	<tr><td><h2>Best Book Buy (3-B.com)</h2></td></tr>
 	<tr><td><h4>Online Bookstore</h4></td></tr>
