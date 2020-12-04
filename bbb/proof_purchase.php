@@ -1,4 +1,24 @@
+<?php
+	include_once 'connect_to_database.php';
+	//TODO:
+	//update sold status
+?>
+<?php
+	// Start the session
+	session_start();
+	echo $_SESSION["user"];
 
+	// Check if credit card updated
+	$new = $_POST["cardgroup"];
+	if($new == "new_card") {
+		$credit_card = $_POST["credit_card"];
+		$card_number = $_POST["card_number"];
+		$card_expiration = $_POST["card_expiration"];
+
+		$sql_query = "UPDATE credit_card SET card_number='$card_number', card_type='$credit_card', expiration='$card_expiration' WHERE username='" . $_SESSION["user"] . "';"; 
+		$mysqli_result = $conn->query($sql_query); 
+	}
+?>
 <!DOCTYPE HTML>
 <head>
 	<title>Proof purchase</title>

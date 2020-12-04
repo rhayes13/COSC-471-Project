@@ -4,7 +4,7 @@
 <?php
 	// Start the session
 	session_start();
-	if(!isset($_POST['username']))
+	if(isset($_POST['username']))
 	{
 	    $_SESSION["user"] = $_POST["username"];
 	}
