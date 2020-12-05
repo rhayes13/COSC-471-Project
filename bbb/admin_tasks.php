@@ -77,7 +77,7 @@
 
 		<?php
 			// Avg monthly sales
-			$sql_query = "SELECT * FROM sale NATURAL JOIN book WHERE sold=1 ORDER BY month;";
+			$sql_query = "SELECT * FROM sale NATURAL JOIN book WHERE sold=1 GROUP BY month ORDER BY month;";
 			$mysqli_result = $conn->query($sql_query);
 			if(mysqli_num_rows($mysqli_result) > 0 ){
 				while($row = mysqli_fetch_array($mysqli_result)) {
