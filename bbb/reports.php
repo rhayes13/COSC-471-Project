@@ -50,13 +50,14 @@
 
 	
 ?>
+
+
 <!DOCTYPE HTML>
 <head>
 	<title>ADMIN TASKS</title>
 </head>
 <body>
 	<table align="center" style="border:2px solid blue;">
-	
 		<tr>
 			<td> Registered customers: <?php echo $total ?></td>
 		</tr>
@@ -123,9 +124,6 @@
 				}
 			}
 		?>
-		<tr>
-		<td>&nbsp</td>
-		</tr>
 		<tr>
 		<td>&nbsp</td>
 		</tr>

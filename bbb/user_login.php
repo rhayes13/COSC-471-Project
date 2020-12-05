@@ -4,6 +4,48 @@
 <?php
 	// Start the session
 	session_start();
+
+	$redirect = "user_login.php";
+	$valid = 0;
+
+	if(isset($_POST["username"])) {
+		$enteredUser = $_POST["username"];
+		$enteredPIN = $_POST["pin"];
+		$_SESSION["user"] = $_POST["username"];
+		$sql_query = "SELECT * FROM bbb_user WHERE username='$enteredUser';"; 
+		$mysqli_result = $conn->query($sql_query); 
+				
+
+		if(mysqli_num_rows($mysqli_result) > 0 ){
+			while($row = mysqli_fetch_array($mysqli_result)) {
+				$username = $row['username'];
+			}
+		}
+		$sql_query2 = "SELECT * FROM bbb_user WHERE username='$username';"; 
+		$mysqli_result2 = $conn->query($sql_query2); 
+		if(mysqli_num_rows($mysqli_result2) > 0 ){
+			while($row = mysqli_fetch_array($mysqli_result2)) {
+				$PIN = $row['PIN'];
+
+				if($enteredUser == $username && $enteredPIN == $PIN && $enteredUser != "") {
+					$redirect = "screen2.php";
+					$valid = 1;
+				}
+			}
+		}
+	}
+
+	// To next page!
+	function display()
+	{
+	    header("Refresh:0; url=screen2.php");
+	}
+
+	if(isset($_POST['login']) && $valid = 1)
+	{
+	   display();
+	} 
+	
 ?>
 
 <!DOCTYPE HTML>
@@ -12,7 +54,10 @@
 </head>
 <body>
 	<table align="center" style="border:2px solid blue;">
-		<form action="screen2.php" method="post" id="login_screen">
+		<?php 
+			echo "<form action='" . $redirect . "' method='post' id='login_screen'>";
+		?>
+		
 		<tr>
 			<td align="right">
 				Username<span style="color:red">*</span>:

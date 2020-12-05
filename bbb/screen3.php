@@ -5,6 +5,7 @@
 <?php
 	// Start the session
 	session_start();
+	echo $_SESSION["user"];
 ?>
 
 <html>
@@ -28,7 +29,7 @@
 		<tr>
 			<td align="left">
 				<?php
-					$sales = mysqli_query($conn, "SELECT * FROM sale WHERE sold = 0;");	
+					$sales = mysqli_query($conn, "SELECT * FROM sale WHERE sold = 0 AND username='" . $_SESSION["user"] . "';");	
 					$cart_num = mysqli_num_rows($sales); // Calculate new sale_id	
 					echo "<h6> <fieldset>Your Shopping Cart has " . $cart_num . " items</fieldset> </h6>";
 				?>
@@ -158,15 +159,9 @@
 							// Insert statement with to sale table sold = 0
 							// Indicates that book is in shopper's cart
 							// In screen 5, sort where 'sold' = 0 to find items in cart (delete these on log off)
-							function insertToCart($conn, $sale_id, $quantity, $month,$sale_year, $sold, $username, $isbn) {
+							function insertToCart($conn, $sale_id, $quantity, $month, $sale_year, $sold, $username, $isbn) {
 								$SQL = "INSERT INTO sale (sale_id,  quantity, month, sale_year, sold, username, isbn) 
-									VALUES (".$sale_id.",
-											".$quantity.",
-											'".$month."',
-											".$sale_year.",
-											".$sold.", 
-											'".$username."',
-											'".$isbn."')";
+									VALUES ('$sale_id', '$quantity','$month','$sale_year', '$sold', '$username', '$isbn')";
 								mysqli_query($conn, $SQL);
 							}
 							

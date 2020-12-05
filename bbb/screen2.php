@@ -4,10 +4,8 @@
 <?php
 	// Start the session
 	session_start();
-	if(isset($_POST['username']))
-	{
-	    $_SESSION["user"] = $_POST["username"];
-	}
+
+	
 	
 	echo $_SESSION["user"];
 ?>
