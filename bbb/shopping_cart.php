@@ -98,8 +98,8 @@
 
 
 
-									if (isset($_POST['isbn'])) {
-										$quantity = $_POST['isbn'];
+									if (isset($_GET['isbn'])) {
+										$quantity = $_GET['isbn'];
 										urlFun($conn, $sale_id, $quantity, $isbn);
 									}
 								
@@ -110,8 +110,8 @@
 									echo "</tr>";
 									// echo "<p>" . $sale_id . "</p>";
 									
-									if (isset($_POST['delIsbn'])) {
-										$isbn = $_POST['delIsbn'];
+									if (isset($_GET['delIsbn'])) {
+										$isbn = $_GET['delIsbn'];
 										delete($conn, $sale_id, $isbn);
 									}
 

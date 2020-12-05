@@ -1,8 +1,6 @@
 <?php
 	include_once 'connect_to_database.php';
-?>
 
-<?php
 	// Start the session
 	session_start();
 	echo $_SESSION["user"];
@@ -20,6 +18,7 @@
 	function cart(sale_id, quantity, month, sale_year, sold, username, isbn){
 		window.location.href="screen3.php?sale_id="+ sale_id + "&quantity=" + quantity + "&month=" 
 		+ month + "&sale_year=" + sale_year + "&sold=" + sold + "&username=" + username + "&isbn=" + isbn;
+		console.log("cart()");
 	}
 	</script>
 	
@@ -29,6 +28,7 @@
 		<tr>
 			<td align="left">
 				<?php
+					echo $_SESSION["user"];
 					$sales = mysqli_query($conn, "SELECT * FROM sale WHERE sold = 0 AND username='" . $_SESSION["user"] . "';");	
 					$cart_num = mysqli_num_rows($sales); // Calculate new sale_id	
 					echo "<h6> <fieldset>Your Shopping Cart has " . $cart_num . " items</fieldset> </h6>";
@@ -52,12 +52,13 @@
 							
 							function where_sql() {
 								$str = " WHERE ";
+								$flag = false;
 								$keywordcounter = 1;
 								
 								while (isset($_GET['keyword'.$keywordcounter.''])) {
+									$flag = true;
 									$keyword = $_GET['keyword'.$keywordcounter.''];
 									
-									echo "<script>console.log('here');</script>";
 									// If 'Keyword Anywhere'
 									if ($_GET['att1'] === "anywhere") {
 										if ($keywordcounter === 1){
@@ -140,30 +141,20 @@
 										}
 									}
 									
-									echo "<script>console.log('yooooo');</script>";
 									// If category does not equal 'all'
 									if ($_GET['category'] !== "all") {
-										echo "<script>console.log('why');</script>";
 										$str = $str." AND category = '".$_GET['category']."'";
 									} 
 									$keywordcounter++;
 								}
-								
-								return $str;
+								if ($flag)
+									return $str;
+								else
+									return "";
 							}
 							
-							$books = $books.where_sql();							
-							
-							$result = mysqli_query($conn, $books);						
-							
-							// Insert statement with to sale table sold = 0
-							// Indicates that book is in shopper's cart
-							// In screen 5, sort where 'sold' = 0 to find items in cart (delete these on log off)
-							function insertToCart($conn, $sale_id, $quantity, $month, $sale_year, $sold, $username, $isbn) {
-								$SQL = "INSERT INTO sale (sale_id,  quantity, month, sale_year, sold, username, isbn) 
-									VALUES ('$sale_id', '$quantity','$month','$sale_year', '$sold', '$username', '$isbn')";
-								mysqli_query($conn, $SQL);
-							}
+							$books = $books.where_sql();
+							$result = mysqli_query($conn, $books);	
 							
 							// This is the where the information on this screen comes from
 							if (mysqli_num_rows($result) > 0) {
@@ -171,7 +162,7 @@
 								$current_sale_id = mysqli_num_rows($sale_id) + 1; // Calculate new sale_id	
 								
 								while ($row = mysqli_fetch_assoc($result)) {
-									
+									echo "<script>console.log('here1');</script>";
 									echo "<tr><td align='left'>";
 									//Next line calls cart() JS function
 									// TO-DO: Need to remove hard-coding of username attribute
@@ -185,18 +176,27 @@
 										
 									// Check if URL has been updated by cart() script at top of page
 									if (isset($_GET['sale_id'])) {
+										
 										$sale_id = $_GET['sale_id'];
 										$quantity = $_GET['quantity'];
 										$month = $_GET['month'];
 										$sale_year = $_GET['sale_year'];
 										$sold = $_GET['sold'];
-										$username = $_GET['username'];
 										$isbn = $_GET['isbn'];
-																				
-										insertToCart($conn, $sale_id, $quantity, $month,$sale_year, $sold, $username, $isbn);
+
+										insertToCart($conn, $sale_id, $quantity, $month,$sale_year, $sold, $_SESSION['user'], $isbn);
 										$current_sale_id++;
 									}
 								}
+							}
+							
+							// Insert statement with to sale table sold = 0
+							// Indicates that book is in shopper's cart
+							// In screen 5, sort where 'sold' = 0 to find items in cart (delete these on log off)
+							function insertToCart($conn, $sale_id, $quantity, $month, $sale_year, $sold, $username, $isbn) {
+								$SQL = "INSERT INTO sale (sale_id,  quantity, month, sale_year, sold, username, isbn) 
+									VALUES ('$sale_id', '$quantity','$month','$sale_year', '$sold', '$username', '$isbn')";
+								mysqli_query($conn, $SQL);
 							}
 					?>
 				</table>
