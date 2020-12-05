@@ -122,9 +122,7 @@
 					echo "<td>" . $price . "</td>";
 					echo "</tr>";
 
-					/* PLACE UPDATE, SOLD=1 QUERY HERE */
-					$sql_query2 = "UPDATE sale SET sold=1 WHERE ISBN='$isbn' AND username='" . $_SESSION["user"] . "';"; 
-					$mysqli_result2 = $conn->query($sql_query2); 
+					
 				}
 			}
 
@@ -163,6 +161,10 @@
 			echo "</br>_______</br>Total: $" . ($sum + $shipping);
 
 			//$conn->close();
+
+			/* PLACE UPDATE, SOLD=1 QUERY HERE */
+					$sql_query2 = "UPDATE sale SET sold=1 WHERE ISBN='$isbn' AND username='" . $_SESSION["user"] . "';"; 
+					$mysqli_result2 = $conn->query($sql_query2); 
 		?>
 	</div>
 	</td>
