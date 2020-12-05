@@ -1,7 +1,5 @@
 <?php
 	include_once 'connect_to_database.php';
-	//TODO:
-	//update sold status -- left out for testing
 ?>
 <?php
 	// Start the session
@@ -123,10 +121,14 @@
 					echo "<td style='text-align:center'>" . $quantity . "</td>";
 					echo "<td>" . $price . "</td>";
 					echo "</tr>";
+
+					/* PLACE UPDATE, SOLD=1 QUERY HERE */
+					$sql_query2 = "UPDATE sale SET sold=1 WHERE ISBN='$isbn' AND username='" . $_SESSION["user"] . "';"; 
+					$mysqli_result2 = $conn->query($sql_query2); 
 				}
 			}
 
-			/* PLACE UPDATE, SOLD=1 QUERY HERE */
+
 		?>
 	</table>
 	</div>
