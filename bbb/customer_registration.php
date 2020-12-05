@@ -68,7 +68,7 @@
 				
 				if (!$error) {
 					echo '<script>alert("New user and credit card info entered successfully.")</script>'; 
-					echo '<script>window.location.href="screen3.php"</script>';
+					echo '<script>window.location.href="screen2.php"</script>';
 				}
 			}
 			
@@ -231,7 +231,7 @@
 				<input type="submit" id="register_submit" name="register_submit" value="Register">
 			</td>
 			</form>
-		<form id="no_registration" action="index.php" method="post">
+		<form id="no_registration" action="registration_message.php" method="post">
 			<td colspan="2" align="center">
 				<input type="submit" id="donotregister" name="donotregister" value="Don't Register">
 			</td>

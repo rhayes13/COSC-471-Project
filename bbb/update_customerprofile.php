@@ -310,7 +310,7 @@
 				$alertStr = "No fields were updated.";
 			}
 			echo '<script>alert("' . $alertStr . '")</script>'; 
-			echo '<script>window.location.href="screen3.php"</script>';
+			echo '<script>window.location.href="screen2.php"</script>';
 		}
 
 		$conn->close();
